@@ -3,7 +3,7 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 
 //TODO: Adicionar o userId on 'customer' property of mesage body
-router.post('/', (req, res) => {
+router.post('/stripe', (req, res) => {
     stripe.charges.create({
         source: req.body.tokenId,
         amount: req.body.amount,        
