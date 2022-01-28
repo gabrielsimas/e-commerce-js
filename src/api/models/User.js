@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+//TODO: Separate Mongoose to Model User (Class)
 const UserSchema = new mongoose.Schema(
     {
         username: { type: String, required: true, unique: true },

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+//TODO: Separate Mongoose to Model Order (Class)
 const OrderSchema = new mongoose.Schema(
     {
         userId: { type: String, required: true },       

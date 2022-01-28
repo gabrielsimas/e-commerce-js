@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+//TODO: Separate Mongoose to Model Cart (Class)
 const CartSchema = new mongoose.Schema(
     {
         userId: { type: String, required: true },       
