@@ -9,7 +9,7 @@ const CryptoJS = require('crypto-js');
 
 
 // CREATE
-
+//TODO: Create a automatic sum of amount
 router.post("/", verifyToken, async (req, res) => {
     const newOrder = new Order(req.body)
 
@@ -55,12 +55,42 @@ router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
+// GET MONTHLY INCOME
+// TODO: Put this router in Report or Stats Router/Controller
+// TODO: Create anothers kinds of Reports and put
+router.get('/income', verifyTokenAndAdmin, async (req, res) => {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+    const previousMonth = new Date(date.setMonth(lastMonth.getMonth() - 1));
+
+    try {
+        const income = await Order.aggregate([
+            { $match: { createdAt: { $gte: previousMonth } } },
+            {
+                $project: {
+                    month: { $month: '$createdAt' },
+                    sales: '$amount'
+                },
+            },
+            {
+                $group: {
+                    _id: '$month',
+                    total: { $sum: '$sales' }
+                },
+            },
+        ]);
+        res.status(200).json(income);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // GET USER ORDERS
 //TODO: Add User token validation!
-router.get('/:userId',verifyTokenAndAuthorization, async (req, res) => {
+router.get('/:userId', verifyTokenAndAuthorization, async (req, res) => {
     try {
         //TODO: Create a repository and then a service to execute this
-        const orders = await Order.find({userId: req.params.userId});
+        const orders = await Order.find({ userId: req.params.userId });
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json(err);
@@ -76,6 +106,6 @@ router.get("", verifyTokenAndAdmin, async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
-})
+});
 
 module.exports = router;

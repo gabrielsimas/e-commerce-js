@@ -67,7 +67,7 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
-})
+});
 
 // GET USER
 router.get('/:id', verifyTokenAndAdmin, async (req, res) => {

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 //TODO: Separate Mongoose to Model Order (Class)
+//TODO: Add price on the buying' day to avoid problms with customers in case of price changes
+//TODO: Add Discount voucher
 const OrderSchema = new mongoose.Schema(
     {
         userId: { type: String, required: true },       
@@ -11,7 +13,7 @@ const OrderSchema = new mongoose.Schema(
                 quantity: {
                     type: Number,
                     default:1,
-                },
+                }                
             },
         ],
         amount: {type: Number, required: true},
